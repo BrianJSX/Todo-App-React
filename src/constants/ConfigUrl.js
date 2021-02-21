@@ -1,0 +1,1 @@
+export const URL_SERVER = 'https://6020ba8f46f1e40017803627.mockapi.io/todoapp';

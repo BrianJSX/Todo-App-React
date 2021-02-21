@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import TaskBoardContainer from './containers/TaskBoard';
+import { Provider } from 'react-redux';
+import configStore from './redux/configStore';
+
+const store = configStore();
 
 class App extends Component {
   render() {
     return (
       <div>
-          <TaskBoardContainer></TaskBoardContainer>
+          <Provider store= {store}>
+            <TaskBoardContainer></TaskBoardContainer>
+          </Provider>
       </div>
     );
   }

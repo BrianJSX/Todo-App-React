@@ -1,49 +1,34 @@
-import React, { Component } from 'react';
-import styles from './style';
+import { withStyles } from '@material-ui/core'
 import Box from '@material-ui/core/Box';
-import { withStyles } from '@material-ui/core';
-import STATUSCODE from '../../constants/StatusCode';
-import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
-import TaskList from '../../components/TaskList';
+import Grid from '@material-ui/core/Grid';
+import React, { Component } from 'react';
 import TaskForm from '../../components/TaskForm';
+import TaskList from '../../components/TaskList';
+import STATUSCODE from '../../constants/StatusCode'
+import styles from './style';
+import {connect} from 'react-redux';
+import {actFetchTaskRequest} from '../../actions/index';
 
-const listTask = [
-    {
-        id: 1,
-        title: "play game",
-        description: "sdadsadsa",
-        status: 1
-    },
-    {
-        id: 2,
-        title: "play game 2",
-        description: "",
-        status: 2
-    },
-    {
-        id: 3,
-        title: "play game 3",
-        description: "",
-        status: 3
-    }
-];
 
 class TaskBoardContainer extends Component {
-    
+
     constructor(props) {
         super(props);
-        this.state =  { 
-            openForm :  true
-        }
+        this.state = {
+            openForm: true
+        };
     }
-
+    componentDidMount() { 
+        this.props.onFetchTasks();
+    }
     rederTaskItem = () => {
+        let {listTask} = this.props;
         let xhtml = null;
         xhtml = STATUSCODE.map((status, index) => {
             const taskFilter = listTask.filter((task) => task.status === status.id);
             return (
-               <TaskList taskFilter={taskFilter} status={status} key={index} ></TaskList>
+                <TaskList taskFilter={taskFilter} status={status} key={index} ></TaskList>
             );
         });
         return xhtml;
@@ -67,5 +52,18 @@ class TaskBoardContainer extends Component {
         );
     }
 }
+const mapStateToProps = (state) => { 
+    return {
+        listTask : state.tasks
+    }
+};
 
-export default withStyles(styles)(TaskBoardContainer);
+const mapDispatchToProps = (dispatch, props) => { 
+    return {
+        onFetchTasks: () => { 
+            dispatch(actFetchTaskRequest());
+        }
+    }
+};
+
+export default withStyles(styles) (connect(mapStateToProps, mapDispatchToProps)(TaskBoardContainer))
