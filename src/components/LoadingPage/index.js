@@ -3,6 +3,7 @@ import Styles from './style';
 import { withStyles } from '@material-ui/core/styles';
 import LoadingIcon from '../../assets/images/loader_small.gif';
 import { connect } from 'react-redux';
+
 class LoadingPage extends Component {
     render() {
         let { classes, showLoading } = this.props;

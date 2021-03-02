@@ -9,11 +9,22 @@ import Typography from '@material-ui/core/Typography';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import DeleteIcon from '@material-ui/icons/Delete';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators, compose } from 'redux';
+import * as ActionTaskCreator from '../../actions';
 import Styles from './style';
 
 
-
 class TaskItem extends Component {
+
+    onDeleteTask = (id) =>  {
+        if(window.confirm('bạn có muốn xóa sản phẩm này không')){
+            let {ActionTaskCreator} = this.props;
+            let {actDeleteTask} = ActionTaskCreator;
+            actDeleteTask(id);
+        }
+    }
+
     render() {
         const { classes } = this.props;
         let { task, status } = this.props;
@@ -65,6 +76,7 @@ class TaskItem extends Component {
                                     color="secondary"
                                     className={classes.button}
                                     startIcon={<DeleteIcon />}
+                                    onClick={() => this.onDeleteTask(task.id)}
                                 >
                                     Delete
                                 </Button>
@@ -76,5 +88,15 @@ class TaskItem extends Component {
         );
     }
 }
+const mapStateToProps = null;
 
-export default withStyles(Styles)(TaskItem);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        ActionTaskCreator :  bindActionCreators(ActionTaskCreator, dispatch)
+    };
+};
+
+export default compose(
+    withStyles(Styles),
+    connect(mapStateToProps, mapDispatchToProps),
+)(TaskItem);

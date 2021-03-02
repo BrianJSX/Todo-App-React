@@ -6,39 +6,51 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { actFetchTask } from '../../actions/index';
+import { bindActionCreators } from 'redux';
+import * as actionCreator from '../../actions/index';
 import LoadingPage from '../../components/LoadingPage';
 import TaskForm from '../../components/TaskForm';
 import TaskList from '../../components/TaskList';
 import STATUSCODE from '../../constants/StatusCode';
 import styles from './style';
+import ROUTER from '../../router';
+import AdminLayout from '../../components/AdminLayout';
+
 
 class TaskBoardContainer extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            openForm: true
-        };
-    }
-
     componentDidMount() {
-        this.props.onFetchTasks();
+        let { taskActionCreator } = this.props;
+        let { actFetchTask } = taskActionCreator;
+        actFetchTask();
     }
 
     rederTaskItem = () => {
         let { listTask } = this.props;
+
         let xhtml = null;
         xhtml = STATUSCODE.map((status, index) => {
-            const taskFilter = listTask.filter((task) => task.status === status.id);
+            const taskFilter = listTask.filter((task) => typeof (task.status) == 'string' ? Number(task.status) === status.id : task.status === status.id);
             return (
-                <TaskList taskFilter={taskFilter} status={status} key={index} ></TaskList>
+                <TaskList taskFilter={taskFilter} status={status} key={index}>
+                </TaskList>
+            );
+        });
+        return xhtml;
+    }
+
+    renderMenu = () => {
+        let xhtml = null;
+        xhtml = ROUTER.map((router, index) => {
+            return (
+                <AdminLayout key={index} path={router.path} exact={router.exac} component={router.component}></AdminLayout>
             );
         });
         return xhtml;
     }
 
     render() {
+
         return (
             <Container>
                 <LoadingPage></LoadingPage>
@@ -60,15 +72,13 @@ class TaskBoardContainer extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        listTask: state.tasks
+        listTask: state.tasks,
     };
 };
 
 const mapDispatchToProps = (dispatch, props) => {
     return {
-        onFetchTasks: () => {
-            dispatch(actFetchTask());
-        }
+        taskActionCreator: bindActionCreators(actionCreator, dispatch),
     };
 };
 

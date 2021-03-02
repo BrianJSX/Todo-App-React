@@ -1,3 +1,5 @@
-export const Styles = () =>  {
+const Styles = () =>  {
     
-}
+};
+
+export default Styles;

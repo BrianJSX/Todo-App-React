@@ -19,7 +19,7 @@ class TaskList extends Component {
                         taskFilter.map((task, index) => {
                             return (
                                 <TaskItem task={task} status={status} key={index}></TaskItem>
-                            )
+                            );
                         })
                     }
                 </div>

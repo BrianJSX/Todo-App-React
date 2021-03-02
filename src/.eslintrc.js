@@ -12,5 +12,4 @@ module.exports = {
         quotes:[1, 'single'],
     },
     plugins: ['prettier'],
-
 };

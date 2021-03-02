@@ -25,6 +25,60 @@ export const actFetchTask  = () => {
     };
 };
 
+export const actAddTask  = (task) => {
+    return {
+        type: Type.ADD_TASK,
+        payload:  { 
+            task
+        }
+    };
+};
+
+export const actAddTaskSuccess  = (data) => {
+    return {
+        type: Type.ADD_SUCCESS,
+        payload: { 
+            data
+        }
+    };
+};
+
+export const actAddTaskFail  = (error) => {
+    return {
+        type: Type.ADD_FAIL,
+        payload :  {
+            error
+        }
+    };
+};
+
+export const actDeleteTask = (id) =>  {
+    return { 
+        type: Type.DELETE_TASK,
+        payload: { 
+            id
+        }
+    };
+};
+
+export const actDeleteTaskSuccess = (data) =>  {
+    return { 
+        type: Type.DELETE_SUCCESS,
+        payload:  {
+            data
+        }
+    };
+};
+
+export const actDeleteTaskFail = (error) =>  {
+    return { 
+        type: Type.DELETE_FAIL,
+        payload: { 
+            error
+        }
+    };
+};
+
 export const actShowLoading = () => { 
     return {
         type: UiLoading.SHOW_LOADING

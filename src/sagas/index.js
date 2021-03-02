@@ -1,31 +1,50 @@
-import {fork, take, call, put, delay} from 'redux-saga/effects';
+import { call, put, delay, takeEvery} from 'redux-saga/effects';
 import * as Type from '../constants/ActionType';
-import { getListTask } from '../api/task';
-import {actFetchTaskSuccess, actFetchTaskFail, actShowLoading, actHiddenLoading} from '../actions/index';
+import { getListTask, postListTask, deleteListTask } from '../api/task';
+import * as actionTask from '../actions/index';
 
 function* watchFetchListTaskAction() {
-    while(true){
-        yield take(Type.FETCH_TASK);
-        yield put(actShowLoading());
+        yield put(actionTask.actShowLoading());
         const resp = yield call(getListTask);
         const {status, data} = resp;
         if(status === 200) { 
-            yield put(actFetchTaskSuccess(data));
+            yield put(actionTask.actFetchTaskSuccess(data));
         } else { 
-            yield put(actFetchTaskFail(data));
+            yield put(actionTask.actFetchTaskFail(data));
         }
         yield delay(2000);
-        yield put(actHiddenLoading());
-    }
+        yield put(actionTask.actHiddenLoading());
 } 
+function* watchAddListTaskAction({payload}) { 
+    yield put(actionTask.actShowLoading());
+    const resp = yield call(postListTask, payload.task);
+    const {status, data} = resp;
+    if(status === 201) { 
+        yield put(actionTask.actAddTaskSuccess(data));
+    } else { 
+        yield put(actionTask.actAddTaskFail(data));
+    }
+    yield delay(2000);
+    yield put(actionTask.actHiddenLoading());
+}
 
-function* watchCreateTaskAction() {
-
-}   
+function* watchDeleteListTaskAction({payload}) { 
+    yield put(actionTask.actShowLoading());
+    const resp = yield call(deleteListTask, payload.id);
+    const {status, data} = resp;
+    if(status === 200){
+        yield put(actionTask.actDeleteTaskSuccess(data));
+    } else  {
+        yield put(actionTask.actDeleteTaskFail(data));
+    }
+    yield delay(2000);
+    yield put(actionTask.actHiddenLoading());
+}
 
 function* rootSaga() { 
-    yield fork(watchFetchListTaskAction);
-    yield fork(watchCreateTaskAction);
+    yield takeEvery(Type.FETCH_TASK, watchFetchListTaskAction);
+    yield takeEvery(Type.ADD_TASK, watchAddListTaskAction);
+    yield takeEvery(Type.DELETE_TASK, watchDeleteListTaskAction);
 }
 
 export default rootSaga;
