@@ -1,6 +1,10 @@
-const styles = () => ({
+const styles = (theme) => ({
     paper: { 
-        height: "200px"
+        height: '200px'
+    },
+    content:  {
+        flexGrow: 1,
+        padding: theme.spacing(3),
     }
 });
 

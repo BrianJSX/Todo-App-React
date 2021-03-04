@@ -1,4 +1,4 @@
-import { withStyles } from '@material-ui/core';
+import { Toolbar, withStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -13,12 +13,9 @@ import TaskForm from '../../components/TaskForm';
 import TaskList from '../../components/TaskList';
 import STATUSCODE from '../../constants/StatusCode';
 import styles from './style';
-import ROUTER from '../../router';
-import AdminLayout from '../../components/AdminLayout';
-
 
 class TaskBoardContainer extends Component {
-
+    
     componentDidMount() {
         let { taskActionCreator } = this.props;
         let { actFetchTask } = taskActionCreator;
@@ -39,23 +36,14 @@ class TaskBoardContainer extends Component {
         return xhtml;
     }
 
-    renderMenu = () => {
-        let xhtml = null;
-        xhtml = ROUTER.map((router, index) => {
-            return (
-                <AdminLayout key={index} path={router.path} exact={router.exac} component={router.component}></AdminLayout>
-            );
-        });
-        return xhtml;
-    }
-
     render() {
-
+        const {classes} = this.props;   
         return (
-            <Container>
+            <Container className={classes.content}>
+                <Toolbar></Toolbar>
                 <LoadingPage></LoadingPage>
                 <ToastContainer />
-                <Box component="div" m={1}>
+                <Box component="div" >
                     <TaskForm></TaskForm>
                 </Box>
                 <Box component="div" mt={3}>

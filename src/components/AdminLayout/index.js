@@ -7,19 +7,17 @@ class AdminLayout extends Component {
     render() {
         const { component: YourComponent, ...remainProps } = this.props;
         return (
-            <Router>
-                <Switch>
-                    <Route
+            <Switch>
+                <Route
                     {...remainProps}
                     render={routeProps => (
                         <Dashboard>
                             <YourComponent {...routeProps} ></YourComponent>
                         </Dashboard>
-                      )}
-                    >
-                    </Route>
-                </Switch>
-            </Router>
+                    )}
+                >
+                </Route>
+            </Switch>
         );
     }
 }

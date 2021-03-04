@@ -16,8 +16,8 @@ class Dashboard extends Component {
         };
     }
 
-    onChangeSibar = () =>  {
-        const {openSideBar} = this.state;
+    onChangeSibar = () => {
+        const { openSideBar } = this.state;
         this.setState({
             openSideBar: !openSideBar
         });
@@ -26,14 +26,15 @@ class Dashboard extends Component {
     render() {
         const { children } = this.props;
         const { openSideBar } = this.state;
+        const { classes } = this.props;
         return (
             <div className="tasks__container">
                 <Header onChangeSibarIndex={this.onChangeSibar}></Header>
-                <Grid container direction="row">
+                <Grid container direction="row" >
                     <Grid item xs={openSideBar ? 2 : 0}>
-                        {
-                            openSideBar ? <SideBar></SideBar> : ''
-                        }
+                            {
+                                openSideBar ? <SideBar></SideBar> : ''
+                            }
                     </Grid>
                     <Grid item xs={openSideBar ? 10 : 12}>
                         {children}

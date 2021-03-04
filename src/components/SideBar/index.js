@@ -1,52 +1,49 @@
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import { withStyles } from '@material-ui/core/styles';
-import HomeIcon from '@material-ui/icons/Home';
-import WorkIcon from '@material-ui/icons/Work';
-import React, { Component } from 'react';
-import { compose } from 'redux';
-import Styles from './style';
-
-const listBar = [
-    {
-        name: 'Trang chủ',
-        icon: <HomeIcon />
-    },
-    {
-        name: 'Quản lý công việc',
-        icon: <WorkIcon />
-    }
-
-];
+import { Drawer, Toolbar } from "@material-ui/core";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import { withStyles } from "@material-ui/core/styles";
+import React, { Component } from "react";
+import { NavLink } from "react-router-dom";
+import { compose } from "redux";
+import ROUTER from "../../router";
+import Styles from "./style";
 
 class SideBar extends Component {
     render() {
-        const { classes } = this.props;
+        let { classes } = this.props;
         return (
-            <div
-                className={classes.list}
-                role="presentation"
-            >
-                <List>
-                    {
-                        listBar.map((text, index) => {
-                            return (
-                                <ListItem button key={index}>
-                                    <ListItemIcon>{text.icon}</ListItemIcon>
-                                    <ListItemText primary={text.name} />
-                                </ListItem>
-                            );
-                        })
-                    }
-                </List>
+            <div>
+                <Drawer
+                    className={classes.drawer}
+                    variant="permanent"
+                    classes={{
+                        paper: classes.drawerPaper,
+                    }}
+                >
+                    <Toolbar />
+                    <div className={classes.drawerContainer}>
+                        <List>
+                            {ROUTER.map((router, index) => (
+                                <NavLink
+                                    to={router.path}
+                                    exact={router.exac}
+                                    className={classes.MenuLink}
+                                    activeClassName={classes.activeMenu}
+                                >
+                                    <ListItem button key={index}>
+                                        <ListItemIcon>{router.icon}</ListItemIcon>
+                                        <ListItemText primary={router.name} />
+                                    </ListItem>
+                                </NavLink>
+                            ))}
+                        </List>
+                    </div>
+                </Drawer>
             </div>
         );
     }
-
 }
 
-export default compose(
-    withStyles(Styles)
-)(SideBar);
+export default compose(withStyles(Styles))(SideBar);

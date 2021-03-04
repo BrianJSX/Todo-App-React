@@ -6,6 +6,7 @@ import theme from './common/theme';
 import ROUTER from './router';
 import AdminLayout from './components/AdminLayout';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import { BrowserRouter as Router} from 'react-router-dom';
 
 
 const store = configStore();
@@ -27,7 +28,9 @@ class App extends Component {
       <Provider store={store}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {this.renderMenu()}
+          <Router>
+            {this.renderMenu()}
+          </Router>
         </ThemeProvider>
       </Provider>
     );

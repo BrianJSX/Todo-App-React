@@ -59,7 +59,7 @@ class Header extends Component {
 
         return (
             <div className={classes.grow}>
-                <AppBar position="static">
+                <AppBar position="fixed" className={classes.appBar}>
                     <Toolbar>
                         <IconButton
                             edge="start"

@@ -62,5 +62,8 @@ const Styles = (theme) => ({
             display: 'none',
         },
     },
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
+    },
 });
 export default Styles;

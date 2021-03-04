@@ -1,18 +1,22 @@
 import HomePage from './page/HomePage';
-import TasksPage from './page/TasksPage';
+import TaskBoardContainer from './containers/TaskBoard';
+import HomeIcon from '@material-ui/icons/Home';
+import WorkIcon from '@material-ui/icons/Work';
 
 const ROUTER =  [
     {
-        name: 'home',
+        name: 'Home',
         exac: true, 
-        path: '/home',
-        component: HomePage ,
+        path: '/',
+        component: HomePage,
+        icon: <HomeIcon></HomeIcon>
     },
     {
-        name: 'Trang quản lý công việc',
+        name: 'Tasks Manager',
         exac: true, 
         path: '/tasks',
-        component: TasksPage,
+        component: TaskBoardContainer,
+        icon: <WorkIcon></WorkIcon>
     },
 ];
 

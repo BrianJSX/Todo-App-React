@@ -1,41 +1,41 @@
-import { Grid, Box } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
-import { Field, reduxForm } from 'redux-form';
-import Styles from './style';
-import { bindActionCreators } from 'redux';
-import * as TaskActionCreator from '../../actions';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import Select from '@material-ui/core/Select';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import { Grid } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import FormControl from "@material-ui/core/FormControl";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import InputLabel from "@material-ui/core/InputLabel";
+import Select from "@material-ui/core/Select";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import AddToPhotosIcon from "@material-ui/icons/AddToPhotos";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { bindActionCreators, compose } from "redux";
+import { Field, reduxForm } from "redux-form";
+import * as TaskActionCreator from "../../actions";
+import Styles from "./style";
+import validate from "./validate";
 
 class TaskForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            open: false
+            open: false,
         };
     }
 
     handleClickOpen = () => {
         this.setState({
-            open: true
+            open: true,
         });
     };
 
     handleClose = () => {
         this.setState({
-            open: false
+            open: false,
         });
     };
 
@@ -43,12 +43,11 @@ class TaskForm extends Component {
         let { TaskActionCreator } = this.props;
         let { actAddTask } = TaskActionCreator;
         actAddTask(data);
-    }
+    };
 
     render() {
         let { open } = this.state;
-        let { handleSubmit } = this.props;
-        let { classes } = this.props;
+        let { handleSubmit, classes, invalid, submiting } = this.props;
 
         const renderTextField = ({
             label,
@@ -87,8 +86,8 @@ class TaskForm extends Component {
                     {...input}
                     {...custom}
                     inputProps={{
-                        name: 'status',
-                        id: 'status-native-simple'
+                        name: "status",
+                        id: "status-native-simple",
                     }}
                 >
                     {children}
@@ -99,18 +98,41 @@ class TaskForm extends Component {
 
         return (
             <div>
-                <Button onClick={this.handleClickOpen} variant="outlined" color="primary">
+                <Button
+                    onClick={this.handleClickOpen}
+                    variant="outlined"
+                    color="primary"
+                >
                     <AddToPhotosIcon></AddToPhotosIcon> Thêm công việc
-                </Button>
-                <Dialog fullWidth={true} open={open} onClose={this.handleClose}  aria-labelledby="form-dialog-title">
+        </Button>
+                <Dialog
+                    fullWidth={true}
+                    open={open}
+                    onClose={this.handleClose}
+                    aria-labelledby="form-dialog-title"
+                >
                     <form onSubmit={handleSubmit(this.onSubmitForm)}>
                         <DialogTitle id="form-dialog-title">Thêm công việc</DialogTitle>
                         <DialogContent>
-                                <Box component="div">
-                                    <Field name="title" component={renderTextField} label="Task Name" />
-                                </Box>
+                            <Grid
+                                container
+                                direction="column"
+                                justify="center"
+                                alignItems="center"
+                            >
                                 <Grid item xs={12}>
-                                    <Field name="description" component={renderTextField} label="Task Desciption" />
+                                    <Field
+                                        name="title"
+                                        component={renderTextField}
+                                        label="Task Name"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Field
+                                        name="description"
+                                        component={renderTextField}
+                                        label="Task Desciption"
+                                    />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Field
@@ -125,14 +147,19 @@ class TaskForm extends Component {
                                         <option value={3}>DONE</option>
                                     </Field>
                                 </Grid>
+                            </Grid>
                         </DialogContent>
                         <DialogActions>
                             <Button color="primary" onClick={this.handleClose}>
                                 Cancel
-                        </Button>
-                            <Button type="submit" color="primary">
+              </Button>
+                            <Button
+                                disabled={invalid || submiting}
+                                type="submit"
+                                color="primary"
+                            >
                                 lưu
-                            </Button>
+              </Button>
                         </DialogActions>
                     </form>
                 </Dialog>
@@ -140,11 +167,12 @@ class TaskForm extends Component {
         );
     }
 }
+
 const mapStateToProps = null;
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        TaskActionCreator: bindActionCreators(TaskActionCreator, dispatch)
+        TaskActionCreator: bindActionCreators(TaskActionCreator, dispatch),
     };
 };
 
@@ -152,6 +180,7 @@ export default compose(
     withStyles(Styles),
     connect(mapStateToProps, mapDispatchToProps),
     reduxForm({
-        form: 'TASK_FORM'
-    }),
+        form: "TASK_FORM",
+        validate,
+    })
 )(TaskForm);
